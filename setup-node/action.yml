@@ -1,0 +1,14 @@
+name: Setup Node.js
+description: Setup the Node.js
+inputs:
+  node-version:
+    description: The version of node that should be used
+    default: '16'
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js v${{inputs.node-version}}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{inputs.node-version}}
