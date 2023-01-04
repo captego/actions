@@ -22,8 +22,4 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: |
-        yarn install /
-        --frozen-lockfile /
-        --ignore-scripts /
-        ${{inputs.flags}}
+      run: yarn install --frozen-lockfile --ignore-scripts ${{inputs.flags}}
