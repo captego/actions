@@ -8,10 +8,17 @@ inputs:
   webhook-url:
     description: The Slack Webhook URL
     required: true
+  status:
+    description: The job status
+    required: true
+    default: ${{ job.status }}
   token:
     description: A github PAT
-    required: true
+    required: false
     default: ${{ github.token }}
+  custom-payload:
+    description: Custom payload
+    required: false
 
 runs:
   using: composite
@@ -23,5 +30,4 @@ runs:
         status: ${{ job.status }}
         fields: repo,ref,message,job,commit,workflow,took
       env:
-        GITHUB_TOKEN: ${{ inputs.token }}
         SLACK_WEBHOOK_URL: ${{ inputs.webhook-url }}
