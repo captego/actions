@@ -1,0 +1,37 @@
+name: Tag & Release
+description: >
+  **Note:** This action **does not*Ø publish to npm or any other pkg registry
+  
+  Creates a tag from the version in package.json file
+
+  All you need to description:
+    - Bump the version in package.json
+
+    - Merge your changes to the `main`-branch
+
+inputs:
+  token:
+    required: false
+    description: >
+      Auth token for the github package registry.
+      This token defaults to the github.token. If you which to overwrite it you can do that
+    default: ${{ github.token }}
+
+runs:
+  using: composite
+  steps:
+    - name: Extract version
+      id: extract_version
+      uses: Saionaro/extract-package-version@v1.0.6
+    - name: Print version
+      run: echo ${{ steps.extract_version.outputs.version }}
+      shell: bash
+    - name: Create Tag & Release
+      uses: marvinpinto/action-automatic-releases@v1.2.1
+      with:
+        repo_token: ${{ inputs.token }}
+        prerelease: false
+        title: v${{ steps.extract_version.outputs.version }}
+        automatic_release_tag: v${{ steps.extract_version.outputs.version }}
+
+    

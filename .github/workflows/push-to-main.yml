@@ -1,0 +1,19 @@
+name: '[CI] Push to main'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  main:
+    name: ${{ github.workflow }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./setup-node
+      - uses: ./make-release
+      - uses: ./notify-slack
+        with: 
+          job-name: Tag & Release
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
