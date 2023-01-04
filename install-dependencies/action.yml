@@ -1,6 +1,6 @@
 name: Install Yarn Dependencies
 description: Install Yarn and the Yarn dependencies
-
+author: captego
 inputs:
   flags:
     description: Additional flags to be added to the yarn install command

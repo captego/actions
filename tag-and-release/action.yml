@@ -8,7 +8,7 @@ description: >
     - Bump the version in package.json
 
     - Merge your changes to the `main`-branch
-
+author: captego
 inputs:
   token:
     required: false

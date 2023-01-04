@@ -1,5 +1,6 @@
 name: Setup Node.js
 description: Setup the Node.js
+author: captego
 inputs:
   node-version:
     description: The version of node that should be used

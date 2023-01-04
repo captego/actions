@@ -1,6 +1,6 @@
 name: Notify Slack
 description: Send a message to slack
-
+author: captego
 inputs:
   job-name:
     description: The job name used to find the job
