@@ -1,0 +1,51 @@
+name: '[GCP] Deploy to Cloud run'
+description: Deploy a docker container to google cloud run
+author: captego
+inputs:
+  project:
+    description: The GCP project
+    required: true
+
+  credentials:
+    description: The json credentials used to auth with gcloud
+    required: true
+
+  service:
+    description: The name of the service. This will default to the name of the github repository
+    required: false
+    default: ${{  github.event.repository.name }}
+  
+  region:
+    description: The region that the GCP project is using
+    required: false
+    default: europe-west1
+  
+runs:
+  using: composite
+  steps:
+      - uses: google-github-actions/auth@v1
+        with: 
+          credentials_json: ${{ inputs.credentials }}
+
+      - uses: google-github-actions/setup-gcloud@v1
+      
+      - run: gcloud auth configure-docker
+        shell: bash
+      
+      - name: Output container url
+        shell: bash
+        id: container
+        run: |
+          echo "URL=gcr.io/${{ inputs.project }}/${{ inputs.service }}:${{ github.sha }}" >> $GITHUB_OUTPUT
+
+      - name: Build and Push Container
+        shell: bash
+        run: |
+          echo "${{ steps.container.outputs.URL }}"
+          docker build -t ${{ steps.container.outputs.URL }} .
+          docker push ${{ steps.container.outputs.URL }}
+
+      - name: Deploy to Cloud Run
+        shell: bash
+        run: |
+          gcloud run deploy ${{ inputs.service }} --region ${{ inputs.region }} --image ${{ steps.container.outputs.url }}
